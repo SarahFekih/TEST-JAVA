@@ -51,7 +51,7 @@ L'application Spring Boot sera accessible à l'adresse [http://localhost:8000](h
 
 ## Contrôleur REST Back-end 
 
-Mon application back-end utilise un contrôleur REST pour gérer les opérations liées aux films. Voici les endpoints disponibles :
+Cette application utilise un contrôleur REST pour gérer les opérations liées aux films. Voici les endpoints disponibles :
 
 - **Endpoint GET `/api/film/{id}` :** Récupère un film par son ID.
 - **Endpoint POST `/api/film` :** Ajoute un nouveau film.

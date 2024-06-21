@@ -1,4 +1,5 @@
 package com.test_java.test_java.entity;
+
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -22,11 +23,7 @@ public class Film {
     private String description;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-        name = "film_acteur",
-        joinColumns = @JoinColumn(name = "film_id"),
-        inverseJoinColumns = @JoinColumn(name = "acteur_id")
-    )
+    @JoinTable(name = "film_acteur", joinColumns = @JoinColumn(name = "film_id"), inverseJoinColumns = @JoinColumn(name = "acteur_id"))
     private List<Acteur> acteurs; // Liste des acteurs jouant dans ce film
 
     // Constructeur par défaut généré par Lombok

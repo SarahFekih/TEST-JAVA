@@ -1,13 +1,11 @@
 package com.test_java.test_java.contoller;
-import org.modelmapper.ModelMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.test_java.test_java.dto.FilmDTO;
-import com.test_java.test_java.entity.Film;
-import com.test_java.test_java.repository.FilmRepository;
 import com.test_java.test_java.service.FilmService;
 
 /**
@@ -20,13 +18,7 @@ import com.test_java.test_java.service.FilmService;
 public class FilmController {
 
     @Autowired
-    private FilmRepository filmRepository;
-
-    @Autowired
     private FilmService filmService;
-
-    @Autowired
-    private ModelMapper modelMapper;
 
     /**
      * Endpoint GET pour récupérer un film par son ID.
@@ -37,7 +29,7 @@ public class FilmController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getFilmById(@PathVariable Long id) {
         return filmService.getFilmById(id)
-                .map(film -> ResponseEntity.ok(modelMapper.map(film, FilmDTO.class)))
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
@@ -45,14 +37,18 @@ public class FilmController {
      * Endpoint POST pour ajouter un nouveau film.
      *
      * @param filmDTO Les données du film à ajouter.
-     * @return ResponseEntity avec le DTO du film ajouté et le statut HttpStatus.CREATED.
+     * @return ResponseEntity avec le DTO du film ajouté et le statut
+     *         HttpStatus.CREATED.
      */
     @PostMapping
-    public ResponseEntity<FilmDTO> addFilm(@RequestBody FilmDTO filmDTO) {
-
-        Film film = modelMapper.map(filmDTO, Film.class);
-        Film savedFilm = filmRepository.save(film);
-        FilmDTO savedFilmDTO = modelMapper.map(savedFilm, FilmDTO.class);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedFilmDTO);
+    public ResponseEntity<?> addFilm(@RequestBody FilmDTO filmDTO) {
+        try {
+            FilmDTO savedFilmDTO = filmService.addFilm(filmDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedFilmDTO);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erreur lors de l'ajout du film : " + e.getMessage());
+        }
     }
+
 }

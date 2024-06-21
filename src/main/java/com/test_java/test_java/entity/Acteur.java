@@ -25,7 +25,6 @@ public class Acteur {
     @ManyToMany(mappedBy = "acteurs")
     private List<Film> films; // Liste des films dans lesquels cet acteur a joué
 
-
     // Constructeur par défaut généré par Lombok
 
     // Getters et setters générés par Lombok
